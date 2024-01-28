@@ -185,9 +185,9 @@ const Draggable = () => {
   return (
     <>
       <button
-        className="fixed bg-green-600 rounded-[4px] mt-5 right-0 p-5 z-[999]"
+        className="fixed bg-green-600 rounded-[18px] right-0 py-2 px-10 z-[999]"
         onClick={saveState}
-        style={{ position: 'absolute', top: '0', right: '10px' }}
+        style={{ position: 'absolute', top: '0', right: '0' }}
       >
         Save
       </button>
@@ -199,19 +199,30 @@ const Draggable = () => {
       />
       <div className="flex w-screen h-screen">
         <motion.div
-          className="absolute top-0 overflow-hidden bottom-0 z-[10] flex justify-around pt-3 bg-red-600 w-[300px]"
+          className="absolute top-0 overflow-hidden bottom-0 z-[10] flex flex-col pt-3 bg-blue-600 w-[300px]"
           animate={isOpen ? 'open' : 'closed'}
           variants={variants}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex flex-col gap-5">
+          <div className='flex flex-wrap justify-between items-center'>
             <p
+              className="bg-orange-500 w-[100px] h-[40px] rounded-[4px] flex justify-center items-center"
               id="myImage"
               draggable="true"
               onDragStart={dragStart}
             >
               Image
+            </p>{' '}
+            <p
+              className="bg-orange-500 w-[100px] h-[40px] rounded-[4px] flex justify-center items-center"
+              id="myText"
+              draggable="true"
+              onDragStart={dragStart}
+            >
+              Text
             </p>
+          </div>
+          <div className="flex flex-col gap-5">
             <div className="flex flex-col">
               <p className="text-[13px]">Size: {imageSizeIndicator}px</p>
               <input
@@ -226,13 +237,6 @@ const Draggable = () => {
               />
             </div>
           </div>
-          <p
-            id="myText"
-            draggable="true"
-            onDragStart={dragStart}
-          >
-            Text
-          </p>
         </motion.div>
         <button
           className="z-20 absolute left-3 top-40 break-words"
@@ -242,7 +246,7 @@ const Draggable = () => {
         </button>
 
         <div
-          className="flex-auto bg-blue-600 relative flex justify-center items-center queryDiv"
+          className="flex-auto bg-purple-600 relative flex justify-center items-center queryDiv"
           onDrop={drop}
           onDragOver={allowDrop}
         >
