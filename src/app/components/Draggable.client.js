@@ -103,12 +103,44 @@ const Draggable = () => {
     reader.readAsDataURL(file);
   };
 
+  const reattachEventListeners = () => {
+    // Get all the wrapper divs in the second div
+    const wrappers = document.querySelectorAll(
+      '.flex-1.bg-blue-600.relative > div'
+    );
+    wrappers.forEach((wrapper) => {
+      // Get the close button and the content (either text or image) in the wrapper div
+      const closeButton = wrapper.querySelector('a');
+      const content =
+        wrapper.querySelector('p') || wrapper.querySelector('img');
+
+      // Reattach the onclick event to the close button
+      closeButton.onclick = (e) => {
+        e.preventDefault();
+        wrapper.remove();
+      };
+
+      // Check if the content is text or an image
+      if (content.tagName.toLowerCase() === 'p') {
+        // Make the text content editable
+        content.contentEditable = 'true';
+      } else {
+        // Add an onclick event to the image content that opens the file dialog
+        content.onclick = () => {
+          content.classList.add('active');
+          fileInput.current.click();
+        };
+      }
+    });
+  };
+
   // Load the saved state from local storage when the component mounts
   useEffect(() => {
     const savedState = localStorage.getItem('websiteState');
     if (savedState) {
       document.querySelector('.flex-1.bg-blue-600.relative').innerHTML =
         savedState;
+        reattachEventListeners();
     }
   }, []);
 
