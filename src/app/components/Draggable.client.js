@@ -16,8 +16,9 @@ const Draggable = () => {
     const element = document.getElementById(data);
     const clonedElement = element.cloneNode(true);
     clonedElement.style.position = 'absolute';
-    clonedElement.style.left = `${event.clientX}px`;
-    clonedElement.style.top = `${event.clientY}px`;
+    const rect = event.target.getBoundingClientRect();
+    clonedElement.style.left = `${event.clientX - rect.left}px`;
+    clonedElement.style.top = `${event.clientY - rect.top}px`;
     if (data === 'myImage') {
       clonedElement.textContent = '';
       const img = document.createElement('img');
@@ -47,7 +48,7 @@ const Draggable = () => {
           </p>
         </div>
         <div
-          className="flex-1 bg-blue-600"
+          className="flex-1 bg-blue-600 relative"
           onDrop={drop}
           onDragOver={allowDrop}
         >
