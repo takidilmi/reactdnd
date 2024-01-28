@@ -1,7 +1,20 @@
 'use client';
+import { motion } from 'framer-motion';
 import React, { useRef, useState, useEffect } from 'react';
 
 const Draggable = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const variants = {
+    open: {
+      transform: 'translateX(0px)',
+      clipPath: 'circle(100% at 50% 50%)',
+    },
+    closed: {
+      transform: 'translateX(-301px)',
+      clipPath: 'circle(0% at 50% 50%)',
+    },
+  };
+
   // Create a reference to the file input element
   const fileInput = useRef(null);
   // Create state variables for the image size and image size indicator
@@ -126,33 +139,30 @@ const Draggable = () => {
     reader.readAsDataURL(file);
   };
 
+  // Reattaches event listeners to elements within wrappers
   const reattachEventListeners = () => {
-    // Get all the wrapper divs in the second div
-    const wrappers = document.querySelectorAll(
-      '.flex-1.bg-blue-600.relative > div'
-    );
+    // Select all elements with specific class and structure
+    const wrappers = document.querySelectorAll('.queryDiv > div');
+    // For each wrapper, perform the following actions
     wrappers.forEach((wrapper) => {
-      // Get the close button and the content (either text or image) in the wrapper div
+      // Find close button within wrapper
       const closeButton = wrapper.querySelector('a');
-      const content =
-        wrapper.querySelector('p') || wrapper.querySelector('img');
-
-      // Reattach the onclick event to the close button
-      closeButton.onclick = (e) => {
+      // Find content (paragraph or image) within wrapper
+      const content = wrapper.querySelector('p, img');
+      // Add event listener to close button to remove wrapper when clicked
+      closeButton.addEventListener('click', (e) => {
         e.preventDefault();
         wrapper.remove();
-      };
-
-      // Check if the content is text or an image
+      });
+      // If content is a paragraph, make it editable
       if (content.tagName.toLowerCase() === 'p') {
-        // Make the text content editable
         content.contentEditable = 'true';
       } else {
-        // Add an onclick event to the image content that opens the file dialog
-        content.onclick = () => {
+        // If content is an image, add event listener to make it active and trigger file input click
+        content.addEventListener('click', () => {
           content.classList.add('active');
           fileInput.current.click();
-        };
+        });
       }
     });
   };
@@ -161,23 +171,21 @@ const Draggable = () => {
   useEffect(() => {
     const savedState = localStorage.getItem('websiteState');
     if (savedState) {
-      document.querySelector('.flex-1.bg-blue-600.relative').innerHTML =
-        savedState;
+      document.querySelector('.queryDiv').innerHTML = savedState;
       reattachEventListeners();
     }
   }, []);
 
   // Define the saveState function that saves the current state to local storage
   const saveState = () => {
-    const state = document.querySelector(
-      '.flex-1.bg-blue-600.relative'
-    ).innerHTML;
+    const state = document.querySelector('.queryDiv').innerHTML;
     localStorage.setItem('websiteState', state);
     console.log('Website state saved.');
   };
   return (
     <>
       <button
+        className="fixed bg-green-600 rounded-[4px] mt-5 right-0 p-5 z-[999]"
         onClick={saveState}
         style={{ position: 'absolute', top: '0', right: '10px' }}
       >
@@ -189,42 +197,56 @@ const Draggable = () => {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      <input
-        type="range"
-        min="50"
-        max="700"
-        value={imageSize}
-        onChange={(e) => {
-          setImageSize(e.target.value);
-          setImageSizeIndicator(e.target.value);
-        }}
-      />
-
       <div className="flex w-screen h-screen">
-        <div className="flex-1 bg-red-600">
-          <p
-            id="myImage"
-            draggable="true"
-            onDragStart={dragStart}
-          >
-            Image
-            <br />
-            Size: {imageSizeIndicator}px
-          </p>
+        <motion.div
+          className="absolute top-0 overflow-hidden bottom-0 z-[10] flex justify-around pt-3 bg-red-600 w-[300px]"
+          animate={isOpen ? 'open' : 'closed'}
+          variants={variants}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex flex-col gap-5">
+            <p
+              id="myImage"
+              draggable="true"
+              onDragStart={dragStart}
+            >
+              Image
+            </p>
+            <div className="flex flex-col">
+              <p className="text-[13px]">Size: {imageSizeIndicator}px</p>
+              <input
+                type="range"
+                min="50"
+                max="700"
+                value={imageSize}
+                onChange={(e) => {
+                  setImageSize(e.target.value);
+                  setImageSizeIndicator(e.target.value);
+                }}
+              />
+            </div>
+          </div>
           <p
             id="myText"
             draggable="true"
             onDragStart={dragStart}
           >
-            draggable
+            Text
           </p>
-        </div>
+        </motion.div>
+        <button
+          className="z-20 absolute left-3 top-40 break-words"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          Toolbar
+        </button>
+
         <div
-          className="flex-1 bg-blue-600 relative"
+          className="flex-auto bg-blue-600 relative flex justify-center items-center queryDiv"
           onDrop={drop}
           onDragOver={allowDrop}
         >
-          Right Side
+          Website Section
         </div>
       </div>
     </>
