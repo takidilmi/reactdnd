@@ -1,8 +1,10 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 const Draggable = () => {
   const fileInput = useRef(null);
+  const [imageSize, setImageSize] = useState(200);
+  const [imageSizeIndicator, setImageSizeIndicator] = useState(200);
   const dragStart = (event) => {
     event.dataTransfer.setData('text/plain', event.target.id);
   };
@@ -23,7 +25,9 @@ const Draggable = () => {
     if (data === 'myImage') {
       clonedElement.textContent = '';
       const img = document.createElement('img');
-      img.src = "https://via.placeholder.com/200";
+      img.src = '/clickHere.webp';
+      img.width = imageSize;
+      img.height = imageSize;
       img.onclick = () => fileInput.current.click();
       clonedElement.appendChild(img);
     } else if (data === 'myText') {
@@ -38,13 +42,32 @@ const Draggable = () => {
     reader.onloadend = () => {
       const img = document.querySelector('#myImage img');
       img.src = reader.result;
+      img.width = imageSize;
+      img.height = imageSize;
+      setImageSizeIndicator(imageSize);
     };
     reader.readAsDataURL(file);
   };
 
   return (
     <>
-      <input type="file" ref={fileInput} onChange={handleFileChange} style={{ display: 'none' }} />
+      <input
+        type="file"
+        ref={fileInput}
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+      />
+      <input
+        type="range"
+        min="50"
+        max="700"
+        value={imageSize}
+        onChange={(e) => {
+          setImageSize(e.target.value);
+          setImageSizeIndicator(e.target.value);
+        }}
+      />
+
       <div className="flex w-screen h-screen">
         <div className="flex-1 bg-red-600">
           <p
@@ -53,6 +76,8 @@ const Draggable = () => {
             onDragStart={dragStart}
           >
             Image
+            <br />
+            Size: {imageSizeIndicator}px
           </p>
           <p
             id="myText"
@@ -75,4 +100,3 @@ const Draggable = () => {
 };
 
 export default Draggable;
-
