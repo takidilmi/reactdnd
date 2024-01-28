@@ -1,7 +1,8 @@
 'use client';
-import React from 'react';
+import React, { useRef } from 'react';
 
 const Draggable = () => {
+  const fileInput = useRef(null);
   const dragStart = (event) => {
     event.dataTransfer.setData('text/plain', event.target.id);
   };
@@ -22,7 +23,8 @@ const Draggable = () => {
     if (data === 'myImage') {
       clonedElement.textContent = '';
       const img = document.createElement('img');
-      img.src = 'https://via.placeholder.com/200';
+      img.src = "https://via.placeholder.com/200";
+      img.onclick = () => fileInput.current.click();
       clonedElement.appendChild(img);
     } else if (data === 'myText') {
       clonedElement.contentEditable = 'true';
@@ -30,8 +32,19 @@ const Draggable = () => {
     event.target.appendChild(clonedElement);
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const img = document.querySelector('#myImage img');
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <>
+      <input type="file" ref={fileInput} onChange={handleFileChange} style={{ display: 'none' }} />
       <div className="flex w-screen h-screen">
         <div className="flex-1 bg-red-600">
           <p
@@ -62,3 +75,4 @@ const Draggable = () => {
 };
 
 export default Draggable;
+
