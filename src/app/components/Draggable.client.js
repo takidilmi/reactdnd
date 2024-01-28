@@ -96,6 +96,8 @@ const Draggable = () => {
       setImageSizeIndicator(imageSize);
       // Remove the 'active' class from the img element
       img.classList.remove('active');
+      // Reset the value of the file input
+      event.target.value = null;
     };
     // Start reading the selected file as a data URL
     reader.readAsDataURL(file);
