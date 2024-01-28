@@ -28,7 +28,11 @@ const Draggable = () => {
       img.src = '/clickHere.webp';
       img.width = imageSize;
       img.height = imageSize;
-      img.onclick = () => fileInput.current.click();
+      img.onclick = () => {
+        img.classList.add('active');
+        fileInput.current.click();
+      };
+
       clonedElement.appendChild(img);
     } else if (data === 'myText') {
       clonedElement.contentEditable = 'true';
@@ -40,11 +44,12 @@ const Draggable = () => {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      const img = document.querySelector('#myImage img');
+      const img = document.querySelector('.active');
       img.src = reader.result;
       img.width = imageSize;
       img.height = imageSize;
       setImageSizeIndicator(imageSize);
+      img.classList.remove('active');
     };
     reader.readAsDataURL(file);
   };
