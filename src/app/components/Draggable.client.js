@@ -20,61 +20,84 @@ const Draggable = () => {
 
   // Define the drop function that handles the drop event
   const drop = (event) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevent the default behavior of the drop event
+
     // Get the id of the dragged element from the dataTransfer object
     const data = event.dataTransfer.getData('text/plain');
+
     // Get the element with the retrieved id
     const element = document.getElementById(data);
+
     // Clone the dragged element
     const clonedElement = element.cloneNode(true);
 
-    // Create a wrapper div for the cloned element and the close button
+    // Create a new div element to wrap the cloned element and the close button
     const wrapper = document.createElement('div');
-    wrapper.style.position = 'absolute';
-    // Get the position of the drop target
-    const rect = event.target.getBoundingClientRect();
-    // Position the wrapper div at the drop position
-    wrapper.style.left = `${event.clientX - rect.left}px`;
-    wrapper.style.top = `${event.clientY - rect.top}px`;
 
-    // Create the close button
+    // Set the position of the wrapper to 'absolute'
+    Object.assign(wrapper.style, {
+      position: 'absolute',
+
+      // Position the wrapper at the point where the drop event occurred
+      left: `${event.clientX - event.target.getBoundingClientRect().left}px`,
+      top: `${event.clientY - event.target.getBoundingClientRect().top}px`,
+    });
+
+    // Create a close button for the wrapper
     const closeButton = document.createElement('a');
+
+    // Set the position of the close button to 'absolute'
+    Object.assign(closeButton.style, {
+      position: 'absolute',
+      right: '-10px',
+      top: '-10px',
+      cursor: 'pointer',
+    });
+
+    // Set the text content of the close button to 'x'
     closeButton.textContent = 'x';
-    closeButton.style.position = 'absolute';
-    closeButton.style.right = '-10px';
-    closeButton.style.top = '-10px';
-    closeButton.style.cursor = 'pointer';
-    // Remove the wrapper div when the close button is clicked
+
+    // Add an onclick event to the close button to remove the wrapper when clicked
     closeButton.onclick = (e) => {
       e.preventDefault();
       wrapper.remove();
     };
-    // Add the close button to the wrapper div
+
+    // Add the close button to the wrapper
     wrapper.appendChild(closeButton);
 
-    // Check if the dragged element is the image or the text
+    // Check if the id of the dragged element is 'myImage' or 'myText'
     if (data === 'myImage') {
       // Clear the text content of the cloned element
       clonedElement.textContent = '';
+
       // Create a new img element
       const img = document.createElement('img');
-      img.src = '/clickHere.webp';
-      img.width = imageSize;
-      img.height = imageSize;
-      // Add an onclick event to the img element that opens the file dialog
-      img.onclick = () => {
-        img.classList.add('active');
-        fileInput.current.click();
-      };
-      // Add the img element to the wrapper div
+
+      // Set the source, width, and height of the img element
+      Object.assign(img, {
+        src: '/clickHere.webp',
+        width: imageSize,
+        height: imageSize,
+
+        // Add an onclick event to the img element to open the file dialog when clicked
+        onclick: () => {
+          img.classList.add('active');
+          fileInput.current.click();
+        },
+      });
+
+      // Add the img element to the wrapper
       wrapper.appendChild(img);
     } else if (data === 'myText') {
       // Make the cloned element editable
       clonedElement.contentEditable = 'true';
-      // Add the cloned element to the wrapper div
+
+      // Add the cloned element to the wrapper
       wrapper.appendChild(clonedElement);
     }
-    // Add the wrapper div to the drop target
+
+    // Add the wrapper to the target of the drop event
     event.target.appendChild(wrapper);
   };
 
@@ -140,7 +163,7 @@ const Draggable = () => {
     if (savedState) {
       document.querySelector('.flex-1.bg-blue-600.relative').innerHTML =
         savedState;
-        reattachEventListeners();
+      reattachEventListeners();
     }
   }, []);
 
