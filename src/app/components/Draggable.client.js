@@ -24,6 +24,8 @@ const Draggable = () => {
       const img = document.createElement('img');
       img.src = 'https://via.placeholder.com/200';
       clonedElement.appendChild(img);
+    } else if (data === 'myText') {
+      clonedElement.contentEditable = 'true';
     }
     event.target.appendChild(clonedElement);
   };
