@@ -18,10 +18,25 @@ const Draggable = () => {
     const data = event.dataTransfer.getData('text/plain');
     const element = document.getElementById(data);
     const clonedElement = element.cloneNode(true);
-    clonedElement.style.position = 'absolute';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'absolute';
     const rect = event.target.getBoundingClientRect();
-    clonedElement.style.left = `${event.clientX - rect.left}px`;
-    clonedElement.style.top = `${event.clientY - rect.top}px`;
+    wrapper.style.left = `${event.clientX - rect.left}px`;
+    wrapper.style.top = `${event.clientY - rect.top}px`;
+
+    const closeButton = document.createElement('a');
+    closeButton.textContent = 'x';
+    closeButton.style.position = 'absolute';
+    closeButton.style.right = '-10px';
+    closeButton.style.top = '-10px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.onclick = (e) => {
+      e.preventDefault();
+      wrapper.remove();
+    };
+    wrapper.appendChild(closeButton);
+
     if (data === 'myImage') {
       clonedElement.textContent = '';
       const img = document.createElement('img');
@@ -32,12 +47,12 @@ const Draggable = () => {
         img.classList.add('active');
         fileInput.current.click();
       };
-
-      clonedElement.appendChild(img);
+      wrapper.appendChild(img);
     } else if (data === 'myText') {
       clonedElement.contentEditable = 'true';
+      wrapper.appendChild(clonedElement);
     }
-    event.target.appendChild(clonedElement);
+    event.target.appendChild(wrapper);
   };
 
   const handleFileChange = (event) => {
