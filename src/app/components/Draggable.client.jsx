@@ -218,7 +218,7 @@ const Draggable = () => {
         >
           <div className="flex flex-wrap justify-between items-center">
             <p
-              className="bg-orange-500 w-[100px] h-[40px] rounded-[4px] flex justify-center items-center"
+              className="bg-orange-500 w-[100px] h-[40px] rounded-[4px] flex justify-center items-center cursor-grabbing"
               id="myImage"
               draggable="true"
               onDragStart={dragStart}
@@ -226,7 +226,7 @@ const Draggable = () => {
               Image
             </p>{' '}
             <p
-              className="bg-orange-500 w-[100px] h-[40px] rounded-[4px] flex justify-center items-center"
+              className="bg-orange-500 w-[100px] h-[40px] rounded-[4px] flex justify-center items-center cursor-grabbing"
               id="myText"
               draggable="true"
               onDragStart={dragStart}
@@ -349,7 +349,7 @@ const Draggable = () => {
           Website Section
         </div>
       </div>
-      <GenerateFiles/>
+      <GenerateFiles />
     </>
   );
 };
