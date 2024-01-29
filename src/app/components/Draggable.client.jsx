@@ -196,13 +196,18 @@ const Draggable = () => {
   };
   return (
     <>
-      <button
-        className="fixed bg-green-600 rounded-[18px] right-0 py-2 px-10 z-[999]"
-        onClick={saveState}
-        style={{ position: 'absolute', top: '0', right: '0' }}
-      >
-        Save
-      </button>
+      <div className="relative">
+        <button
+          className=" bg-green-600 rounded-[18px] right-0 py-2 px-10 z-[999]"
+          onClick={saveState}
+          style={{ position: 'absolute', top: '0', right: '0' }}
+        >
+          Save
+        </button>
+        <div className="absolute bg-green-600 rounded-[18px] right-40 py-2 px-10 z-[999]">
+          <GenerateFiles />
+        </div>
+      </div>
       <input
         type="file"
         ref={fileInput}
@@ -349,7 +354,6 @@ const Draggable = () => {
           Website Section
         </div>
       </div>
-      <GenerateFiles />
     </>
   );
 };
