@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Drag-and-Drop Website Builder
+
+This project is a simple drag-and-drop website builder built with Next.js. It allows users to create static websites by dragging and dropping text and images into a specific section of the website.
+
+## Features
+
+- **Drag and Drop**: Users can drag elements with the ids "myImage" and "myText" and drop them into the website section.
+- **Toolbar**: The toolbar contains two elements, Text and Image, which users can drag and drop into their website.
+- **Edit Content**: Users can edit the text after it’s dropped into the website section. For images, users can click on the image to open a file dialog and select a new image to replace the existing one.
+- **Delete Sections**: Users can delete the sections. Each dropped element has a close button that removes the wrapper containing the element when clicked.
+- **Save and Load**: The current state of the website section is saved to local storage when the "Save" button is clicked. The saved state is loaded from local storage when the component mounts.
+- **Generate and Dwoload**: One click to generate your creation into an HTML with its style for what you achieved.
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy up and running, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the repo**
+   ```
+   git clone https://github.com/your_username_/Project-Name.git
+   ```
+2. **Install packages**
+   - If you're using npm:
+     ```
+     npm install
+     ```
+   - If you're using pnpm:
+     ```
+     pnpm install
+     ```
+3. **Run the app**
+   - If you're using npm:
+     ```
+     npm run dev
+     ```
+   - If you're using pnpm:
+     ```
+     pnpm dev
+     ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+To use the website builder:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. **Drag and Drop**: Select either the Text or Image from the toolbar and drag it into the website section.
+2. **Edit Content**: Click on the text to edit it. Click on the image to open a file dialog and select a new image.
+3. **Delete Sections**: Click on the 'x' button to delete a section.
+4. **Save**: Click on the "Save" button to save the current state of the website section to local storage.
+5. **Generate Files** : Click "Generate Files" to get your HTML file with the corresponding style/ class names ready to download and save in your machine.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Enjoy building your website!
