@@ -3,6 +3,9 @@ import { motion } from 'framer-motion';
 import React, { useRef, useState, useEffect } from 'react';
 
 const Draggable = () => {
+  const [textStyle, setTextStyle] = useState('normal');
+  const [textColor, setTextColor] = useState('black');
+  const [textSize, setTextSize] = useState(14);
   const [isOpen, setIsOpen] = useState(false);
   const variants = {
     open: {
@@ -103,11 +106,19 @@ const Draggable = () => {
       // Add the img element to the wrapper
       wrapper.appendChild(img);
     } else if (data === 'myText') {
-      // Make the cloned element editable
-      clonedElement.contentEditable = 'true';
-
-      // Add the cloned element to the wrapper
-      wrapper.appendChild(clonedElement);
+      // Create a new paragraph element
+      const paragraph = document.createElement('p');
+      // Set the text content of the paragraph
+      paragraph.textContent = 'Text';
+      // Apply the selected text style, color, and size
+      paragraph.style.fontWeight = textStyle === 'bold' ? 'bold' : 'normal';
+      paragraph.style.fontStyle = textStyle === 'italic' ? 'italic' : 'normal';
+      paragraph.style.color = textColor;
+      paragraph.style.fontSize = `${textSize}px`;
+      // Make the paragraph editable
+      paragraph.contentEditable = 'true';
+      // Add the paragraph to the wrapper
+      wrapper.appendChild(paragraph);
     }
 
     // Add the wrapper to the target of the drop event
@@ -199,12 +210,12 @@ const Draggable = () => {
       />
       <div className="flex w-screen h-screen">
         <motion.div
-          className="absolute top-0 overflow-hidden bottom-0 z-[10] flex flex-col pt-3 bg-blue-600 w-[300px]"
+          className="absolute top-0 overflow-hidden bottom-0 z-[10] gap-2 flex flex-col pt-3 bg-blue-600 w-[300px]"
           animate={isOpen ? 'open' : 'closed'}
           variants={variants}
           transition={{ duration: 0.5 }}
         >
-          <div className='flex flex-wrap justify-between items-center'>
+          <div className="flex flex-wrap justify-between items-center">
             <p
               className="bg-orange-500 w-[100px] h-[40px] rounded-[4px] flex justify-center items-center"
               id="myImage"
@@ -222,9 +233,9 @@ const Draggable = () => {
               Text
             </p>
           </div>
-          <div className="flex flex-col gap-5">
-            <div className="flex flex-col">
-              <p className="text-[13px]">Size: {imageSizeIndicator}px</p>
+          <div className="flex flex-col">
+            <div>
+              <p className="text-[13px]">Image Size: {imageSizeIndicator}px</p>
               <input
                 type="range"
                 min="50"
@@ -236,10 +247,94 @@ const Draggable = () => {
                 }}
               />
             </div>
+            <div className="flex flex-col gap-2">
+              <label className="flex gap-2">
+                <p>Text Style:</p>
+                <select
+                  className="bg-blue-700"
+                  value={textStyle}
+                  onChange={(e) => setTextStyle(e.target.value)}
+                >
+                  <option value="normal">Normal</option>
+                  <option value="bold">Bold</option>
+                  <option value="italic">Italic</option>
+                </select>
+              </label>
+              <label className="flex gap-1">
+                <p>Text Color:</p>
+                <select
+                  value={textColor}
+                  onChange={(e) => setTextColor(e.target.value)}
+                  style={{
+                    backgroundColor: textColor,
+                    color:
+                      textColor === 'black' ||
+                      textColor === 'blue' ||
+                      textColor === 'purple'
+                        ? 'white'
+                        : 'black',
+                  }}
+                >
+                  <option
+                    value="black"
+                    style={{ backgroundColor: 'black', color: 'white' }}
+                  >
+                    Black
+                  </option>
+                  <option
+                    value="red"
+                    style={{ backgroundColor: 'red' }}
+                  >
+                    Red
+                  </option>
+                  <option
+                    value="blue"
+                    style={{ backgroundColor: 'blue', color: 'white' }}
+                  >
+                    Blue
+                  </option>
+                  <option
+                    value="green"
+                    style={{ backgroundColor: 'green' }}
+                  >
+                    Green
+                  </option>
+                  <option
+                    value="yellow"
+                    style={{ backgroundColor: 'yellow' }}
+                  >
+                    Yellow
+                  </option>
+                  <option
+                    value="purple"
+                    style={{ backgroundColor: 'purple', color: 'white' }}
+                  >
+                    Purple
+                  </option>
+                  <option
+                    value="orange"
+                    style={{ backgroundColor: 'orange' }}
+                  >
+                    Orange
+                  </option>
+                </select>
+              </label>
+
+              <label>
+                Text Size: {textSize}px
+                <input
+                  type="range"
+                  min="10"
+                  max="72"
+                  value={textSize}
+                  onChange={(e) => setTextSize(e.target.value)}
+                />
+              </label>
+            </div>
           </div>
         </motion.div>
         <button
-          className="z-20 absolute left-3 top-40 break-words"
+          className="z-20 absolute left-0 top-60 break-words bg-green-600 rounded-[18px] py-2 px-2"
           onClick={() => setIsOpen(!isOpen)}
         >
           Toolbar
