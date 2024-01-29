@@ -1,6 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import React, { useRef, useState, useEffect } from 'react';
+import GenerateFiles from './GenerateFiles';
 
 const Draggable = () => {
   const [textStyle, setTextStyle] = useState('normal');
@@ -348,6 +349,7 @@ const Draggable = () => {
           Website Section
         </div>
       </div>
+      <GenerateFiles/>
     </>
   );
 };
